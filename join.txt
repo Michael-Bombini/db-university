@@ -31,3 +31,43 @@ AND `teachers`.`surname` = "Amato";
 4) Selezionare tutti gli studenti con i dati relativi al corso di laurea a cui sono iscritti e il
    relativo dipartimento, in ordine alfabetico per cognome e nome
 
+SELECT `students`.`name` as 'nome_studente' ,
+		`students`.`surname` as 'cognome_studente' ,
+        `degrees`.`name` as 'nome_corso' , 
+        `departments`.`name` as 'nome_dipartimento'
+FROM `students`
+JOIN `degrees`
+ON `students`.`degree_id` = `degrees`.`id`
+JOIN `departments`
+ON `degrees`.`department_id` = `departments`.`id`
+ORDER BY `nome_studente` , `cognome_studente` ;
+
+
+5) Selezionare tutti i corsi di laurea con i relativi corsi e insegnanti
+
+SELECT `degrees`.`name` AS 'corso_laurea',
+		`courses`.`name` AS 'corso',
+        `teachers`.`name` as 'nome_insegnante',
+        `teachers`.`surname` as 'cognome_insegnante'
+FROM `degrees`
+JOIN `courses` 
+ON `degrees`.`id` = `courses`.`degree_id`
+JOIN `course_teacher`
+ON `courses`.`id` = `course_teacher`.`course_id`
+JOIN `teachers`
+ON `course_teacher`.`teacher_id` = `teachers`.id;
+
+6) Selezionare tutti i docenti che insegnano nel Dipartimento di Matematica (54)
+
+SELECT `teachers`.`name` as 'nome_insegnante',
+        `teachers`.`surname` as 'cognome_insegnante'
+FROM `teachers`
+JOIN `course_teacher` 
+ON `teachers`.`id` = `course_teacher`.`teacher_id`
+JOIN `courses`
+ON `course_teacher`.`course_id` = `courses`.`id`
+JOIN `degrees`
+ON `courses`.`degree_id` = `degrees`.`id`
+JOIN `departments`
+ON `degrees`.`department_id` = `departments`.`id`
+WHERE `departments`.`name` = "Dipartimento di Matematica";
